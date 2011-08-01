@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import sys
+import platform
+from optparse import OptionParser
+
+from codespeed_client import Client
+
+parser = OptionParser()
+parser.set_description('Command-line tool to push benchmark data to CodeSpeed.')
+parser.add_option("--url", help="CodeSpeed root URL (http://localhost:8000/)")
+parser.add_option("--project", help="Project name")
+parser.add_option("--branch", help="SCM branch name")
+parser.add_option("--commitid", help="SCM revision number or commit hash")
+parser.add_option("--revision-date", metavar="DATE", help="SCM revision/commit date")
+parser.add_option("--executable", metavar="NAME", help="Executable name")
+parser.add_option("--environment", metavar="NAME", help="Environment name")
+parser.add_option("--benchmark", metavar="NAME", help="Benchmark name")
+parser.add_option("--result-value", type="float", metavar="VALUE", help="Benchmark result")
+parser.add_option("--min", type="float", metavar="VALUE", help="Benchmark minimal result")
+parser.add_option("--max", type="float", metavar="VALUE", help="Benchmark maximal result")
+parser.add_option("--std-dev", type="float", help="Benchmark result standard deviation")
+parser.add_option("--result-date", metavar="DATE", help="Benchmark result date")
+parser.set_defaults(url='http://localhost:8000/', branch="default", environment=platform.node())
+options, args = parser.parse_args()
+if args:
+    sys.exit("Positional arguments are not expected.")
+
+client = Client(options.url)
+
+try:
+    client.add_result(project=options.project, branch=options.branch,
+                      commitid=options.commitid, revision_date=options.revision_date,
+                      executable=options.executable, environment=options.environment,
+                      benchmark=options.benchmark,
+                      result_value=options.result_value, min=options.min, max=options.max, std_dev=options.std_dev,
+                      result_date=options.result_date)
+except KeyError, e:
+    print e
+    sys.exit(2)
+
+print "URL: %s" % client.url
+print "Data: %r" % client.data
+ok, code, body = client.upload_results()
+print "Result: %s - %s" % (code, body)
+sys.exit(0 if ok else 1)
