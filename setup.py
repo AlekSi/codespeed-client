@@ -9,7 +9,7 @@ setup(
     author_email='alexey.palazhchenko@gmail.com',
     packages=['codespeed_client'],
     scripts=['scripts/codespeed-client'],
-    url='http://pypi.python.org/pypi/codespeed-client',
+    url='https://github.com/AlekSi/codespeed-client',
     license='MIT',
     description='Library and command-line tool to push benchmark data to CodeSpeed.',
     long_description=open('README.txt').read(),
