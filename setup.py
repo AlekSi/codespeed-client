@@ -12,5 +12,5 @@ setup(
     url='https://github.com/AlekSi/codespeed-client',
     license='MIT',
     description='Library and command-line tool to push benchmark data to CodeSpeed.',
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
 )
