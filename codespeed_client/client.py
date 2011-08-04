@@ -10,32 +10,30 @@ class Client(object):
     combined = required + ('branch', 'environment', 'executable', 'revision_date',
                            'result_date', 'min', 'max', 'std_dev')
 
-    default_branch = "default"
-    default_environment = platform.node()
-    default_executable = sys.version.replace('\n', ' ')
-
-    def __init__(self, root_url):
-        self.url = urlparse.urljoin(root_url, '/result/add/json/')
-        self.data = []
-
-    def add_result(self, **kwargs):
-        item = {
-            'branch': self.default_branch,
-            'environment': self.default_environment,
-            'executable': self.default_executable
-        }
-
-        for k in kwargs:
-            if k not in self.combined:
+    @classmethod
+    def _update(cls, item, kwargs):
+        for k, v in kwargs.iteritems():
+            if k not in cls.combined:
                 raise KeyError("Unexpected key %r" % (k,))
-            v = kwargs[k]
             if v is not None:
                 item[k] = v
 
-        missing = []
-        for k in self.required:
-            if k not in item:
-                missing.append(k)
+    def __init__(self, root_url, **kwargs):
+        self.url = urlparse.urljoin(root_url, '/result/add/json/')
+        self.data = []
+
+        self.defaults = {
+            'branch': 'default',
+            'environment': platform.node(),
+            'executable': sys.version.replace('\n', ' ')
+        }
+        self._update(self.defaults, kwargs)
+
+    def add_result(self, **kwargs):
+        item = self.defaults.copy()
+        self._update(item, kwargs)
+
+        missing = [k for k in self.required if k not in item]
         if missing:
             raise KeyError("Missing keys: %r" % missing)
 
