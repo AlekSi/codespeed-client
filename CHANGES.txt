@@ -2,7 +2,12 @@
 Changes
 =======
 
+0.2.0 - August 05, 2011
+=======================
+* Allow to pass defaults to constructor.
+* Python 3 compatibility.
+* Docs.
 
-0.1.0 - August 01, 2011
+0.1.1 - August 01, 2011
 =======================
 * Initial release.
