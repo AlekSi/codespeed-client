@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 import sys
 from optparse import OptionParser
@@ -32,12 +33,12 @@ try:
                       executable=options.executable, benchmark=options.benchmark,
                       result_value=options.result_value, min=options.min, max=options.max, std_dev=options.std_dev,
                       result_date=options.result_date)
-except KeyError, e:
-    print e
+except KeyError as e:
+    print(e)
     sys.exit(2)
 
-print "URL: %s" % client.url
-print "Data: %r" % client.data
+print("URL: %s" % client.url)
+print("Data: %r" % client.data)
 ok, code, body = client.upload_results()
-print "Result: %s - %s" % (code, body)
+print("Result: %s - %s" % (code, body))
 sys.exit(0 if ok else 1)
