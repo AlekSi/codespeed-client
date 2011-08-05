@@ -1,9 +1,18 @@
 import json
 import platform
-import urllib
-import urllib2
-import urlparse
 import sys
+
+if platform.python_version_tuple()[0] == '3':
+    from urllib.parse import urlencode
+    from urllib.parse import urljoin
+    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError
+else:
+    from urllib import urlencode
+    from urlparse import urljoin
+    from urllib2 import urlopen
+    from urllib2 import HTTPError, URLError
+
 
 class Client(object):
     required = ('benchmark', 'commitid', 'project', 'result_value')
@@ -12,14 +21,14 @@ class Client(object):
 
     @classmethod
     def _update(cls, item, kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             if k not in cls.combined:
                 raise KeyError("Unexpected key %r" % (k,))
             if v is not None:
                 item[k] = v
 
     def __init__(self, root_url, **kwargs):
-        self.url = urlparse.urljoin(root_url, '/result/add/json/')
+        self.url = urljoin(root_url, '/result/add/json/')
         self.data = []
 
         self.defaults = {
@@ -42,12 +51,12 @@ class Client(object):
     def upload_results(self):
         data, self.data = self.data, []
         try:
-            f = urllib2.urlopen(self.url, urllib.urlencode({'json': json.dumps(data)}))
+            f = urlopen(self.url, urlencode({'json': json.dumps(data)}).encode('ascii'))
             ok, code, body = True, f.getcode(), f.read()
             f.close()
-        except urllib2.HTTPError as e:
+        except HTTPError as e:
             ok, code, body = False, e.code, e.read()
-        except urllib2.URLError as e:
+        except URLError as e:
             ok, code, body = False, 'xxx', e.reason
 
         return (ok, code, body)
