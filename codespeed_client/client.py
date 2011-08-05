@@ -28,6 +28,10 @@ class Client(object):
                 item[k] = v
 
     def __init__(self, root_url, **kwargs):
+        """
+        kwargs passed there are defaults
+        """
+
         self.url = urljoin(root_url, '/result/add/json/')
         self.data = []
 
@@ -39,6 +43,10 @@ class Client(object):
         self._update(self.defaults, kwargs)
 
     def add_result(self, **kwargs):
+        """
+        kwargs passed there overwrite defaults
+        """
+
         item = self.defaults.copy()
         self._update(item, kwargs)
 
