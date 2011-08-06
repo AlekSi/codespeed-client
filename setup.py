@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='codespeed-client',
-    version='0.2.0',
+    version='0.3.0',
     author='Alexey Palazhchenko',
     author_email='alexey.palazhchenko@gmail.com',
     packages=['codespeed_client'],

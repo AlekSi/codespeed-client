@@ -2,6 +2,10 @@
 Changes
 =======
 
+0.3.0 - August 06, 2011
+=======================
+* Raise exception in case of upload error.
+
 0.2.0 - August 05, 2011
 =======================
 * Allow to pass defaults to constructor.
