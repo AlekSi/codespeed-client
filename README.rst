@@ -26,5 +26,7 @@ Usage as library: ::
 As command-line tool: ::
 
     codespeed-client --help
-    codespeed-client --environment='Test Environment' --project=Project --commitid=1278 --benchmark=primes --result-value=42.0
-    codespeed-client --environment='Test Environment' --project=Project --commitid=1278 --benchmark=ai     --result-value=7
+    codespeed-client --environment='Test Environment' --project=Project --commitid=1278 \
+                     --benchmark=primes --result-value=42.0
+    codespeed-client --environment='Test Environment' --project=Project --commitid=1278 \
+                     --benchmark=ai --result-value=7
