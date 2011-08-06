@@ -4,7 +4,7 @@ from __future__ import print_function
 import sys
 from optparse import OptionParser
 
-from codespeed_client import Client
+from codespeed_client import Client, UploadError
 
 parser = OptionParser()
 parser.set_description('Command-line tool to push benchmark data to CodeSpeed.')
@@ -39,6 +39,11 @@ except KeyError as e:
 
 print("URL: %s" % client.url)
 print("Data: %r" % client.data)
-ok, code, body = client.upload_results()
+
+try:
+    code, body = client.upload_results()
+except UploadError as e:
+    code, body = e.errno, e.strerror
 print("Result: %s - %s" % (code, body))
-sys.exit(0 if ok else 1)
+
+sys.exit(0 if code == 202 else 1)

@@ -14,6 +14,10 @@ else:
     from urllib2 import HTTPError, URLError
 
 
+class UploadError(IOError):
+    pass
+
+
 class Client(object):
     required = ('benchmark', 'commitid', 'project', 'result_value')
     combined = required + ('branch', 'environment', 'executable', 'revision_date',
@@ -60,11 +64,11 @@ class Client(object):
         data, self.data = self.data, []
         try:
             f = urlopen(self.url, urlencode({'json': json.dumps(data)}).encode('ascii'))
-            ok, code, body = True, f.getcode(), f.read()
+            code, body = int(f.getcode()), f.read()
             f.close()
         except HTTPError as e:
-            ok, code, body = False, e.code, e.read()
+            raise UploadError(int(e.code), e.read())
         except URLError as e:
-            ok, code, body = False, 'xxx', e.reason
+            raise UploadError(0, e.reason)
 
-        return (ok, code, body)
+        return (code, body)
