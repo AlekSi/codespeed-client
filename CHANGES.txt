@@ -2,6 +2,10 @@
 Changes
 =======
 
+0.3.1 - August 22, 2011
+=======================
+* Add setup.py classifiers.
+
 0.3.0 - August 06, 2011
 =======================
 * Raise exception in case of upload error.
