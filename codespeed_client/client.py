@@ -2,7 +2,7 @@ import json
 import platform
 import sys
 
-if platform.python_version_tuple()[0] == '3':
+if sys.version_info[0] == 3:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
     from urllib.request import urlopen
@@ -39,10 +39,15 @@ class Client(object):
         self.url = urljoin(root_url, '/result/add/json/')
         self.data = []
 
+        try:
+            pypy_version = ' %d.%d.%d-%s.%d' % sys.pypy_version_info
+        except AttributeError:
+            pypy_version = ''
+
         self.defaults = {
             'branch': 'default',
             'environment': platform.node(),
-            'executable': sys.version.replace('\n', ' ')
+            'executable': '%s (%s%s)' % (platform.python_version(), platform.python_implementation(), pypy_version)
         }
         self._update(self.defaults, kwargs)
 
