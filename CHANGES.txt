@@ -2,6 +2,10 @@
 Changes
 =======
 
+0.3.2 - September 6, 2011
+=========================
+* Shorter default value for executable.
+
 0.3.1 - August 22, 2011
 =======================
 * Add setup.py classifiers.
