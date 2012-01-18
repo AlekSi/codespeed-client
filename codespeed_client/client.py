@@ -40,14 +40,14 @@ class Client(object):
         self.data = []
 
         try:
-            pypy_version = ' %d.%d.%d-%s.%d' % sys.pypy_version_info
+            pypy_version = '%d.%d.%d' % sys.pypy_version_info[:3]
         except AttributeError:
-            pypy_version = ''
+            pypy_version = None
 
         self.defaults = {
             'branch': 'default',
-            'environment': platform.node(),
-            'executable': '%s (%s%s)' % (platform.python_version(), platform.python_implementation(), pypy_version)
+            'environment': platform.node().lower(),
+            'executable': '%s %s' % (platform.python_implementation(), pypy_version or platform.python_version())
         }
         self._update(self.defaults, kwargs)
 
